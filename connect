@@ -1,0 +1,6 @@
+#!/bin/sh
+
+node_name=debug
+localhost=localhost.local
+
+mix compile && iex --erl "-start_epmd false -epmd_module Elixir.DirectEpmdModule.Client -pa _build/dev/lib/direct_epmd_module/ebin -name ${node_name}@${localhost}" -S mix
