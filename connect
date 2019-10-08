@@ -2,5 +2,11 @@
 
 node_name=debug
 localhost=localhost.local
+dem_port="$1"
 
-mix compile && iex --erl "-start_epmd false -epmd_module Elixir.DirectEpmdModule.Client -pa _build/dev/lib/direct_epmd_module/ebin -name ${node_name}@${localhost}" -S mix
+if [[ -z "$dem_port" ]]; then
+  echo "Specify port to connect as first argumment"
+  exit 1
+fi
+
+iex --erl "-env DEM_PORT $dem_port" -S mix rebuild && iex --erl "-start_epmd false -epmd_module Elixir.DirectEpmdModule.Client -pa _build/dev/lib/direct_epmd_module/ebin -name ${node_name}@${localhost} -setcookie 123" -S mix
